@@ -67,7 +67,7 @@ export function AuthProvider({children}) {
             await api.post('/auth/logout')
         }
         catch {
-            // si falla el backend, igual limpiamos sesión local
+            // si falla el backend, igual limpiamos sesiÃ³n local
         }
         finally {
             clearAuth()
