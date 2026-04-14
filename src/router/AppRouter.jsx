@@ -10,6 +10,7 @@ import Appointments from '../pages/Appointments'
 import Forum from '../pages/Forum'
 import Evaluation from '../pages/Evaluation'
 import HospitalsMap from '../pages/HospitalsMap'
+import ForumDetail from '../pages/ForumDetail'
 
 function GuestRoute({children}) {
     const {isAuthenticated, loading} = useAuth()
@@ -102,6 +103,16 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
               />
+
+              <Route
+                path="/forum/:id"
+                element={
+                    <ProtectedRoute>
+                        <ForumDetail/>
+                    </ProtectedRoute>
+                }
+              />
+
           </Routes>
       </BrowserRouter>
     )
