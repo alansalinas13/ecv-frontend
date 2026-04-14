@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import {useEffect, useState} from 'react'
+import {Link, useParams} from 'react-router-dom'
 import api from '../api/axios'
 import AppLayout from '../components/layout/AppLayout'
 import PostCard from '../components/forum/PostCard'
-import { useAuth } from '../context/AuthContext'
+import {useAuth} from '../context/AuthContext'
 import Alert from '../components/ui/Alert'
 import Loader from '../components/ui/Loader'
 import Confirm from '../components/ui/Confirm'
 
 export default function ForumDetail() {
-    const { id } = useParams()
-    const { user } = useAuth()
+    const {id} = useParams()
+    const {user} = useAuth()
 
     const [post, setPost] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -28,7 +28,8 @@ export default function ForumDetail() {
             setError('')
             const response = await api.get(`/posts/${id}`)
             setPost(response.data)
-        } catch (err) {
+        }
+        catch (err) {
             setError(err.response?.data?.message || 'No se pudo cargar el post')
         }
     }
@@ -38,7 +39,8 @@ export default function ForumDetail() {
             try {
                 setLoading(true)
                 await fetchPost()
-            } finally {
+            }
+            finally {
                 setLoading(false)
             }
         }
@@ -55,9 +57,11 @@ export default function ForumDetail() {
             await api.put(`/posts/${postId}`, data)
             setSuccess('Post actualizado correctamente')
             await fetchPost()
-        } catch (err) {
+        }
+        catch (err) {
             setError('No se pudo actualizar el post')
-        } finally {
+        }
+        finally {
             setSubmittingPost(false)
         }
     }
@@ -81,7 +85,9 @@ export default function ForumDetail() {
     }
 
     const confirmAction = async () => {
-        if (!selectedId) return
+        if (!selectedId) {
+            return
+        }
 
         setError('')
         setSuccess('')
@@ -100,7 +106,8 @@ export default function ForumDetail() {
             }
 
             closeConfirm()
-        } catch (err) {
+        }
+        catch (err) {
             setError('No se pudo realizar la acción')
             closeConfirm()
         }
@@ -112,13 +119,15 @@ export default function ForumDetail() {
         setSuccess('')
 
         try {
-            await api.post(`/posts/${postId}/comments`, { content })
+            await api.post(`/posts/${postId}/comments`, {content})
             setSuccess('Comentario agregado correctamente')
             resetForm()
             await fetchPost()
-        } catch {
+        }
+        catch {
             setError('No se pudo agregar el comentario')
-        } finally {
+        }
+        finally {
             setSubmittingComment(false)
         }
     }
@@ -127,14 +136,14 @@ export default function ForumDetail() {
       <AppLayout>
           <div className="space-y-6">
               <Link to="/forum" className="text-sm underline">
-                  ? Volver
+                  ← Volver
               </Link>
 
-              <Alert type="error" message={error} />
-              <Alert type="success" message={success} />
+              <Alert type="error" message={error}/>
+              <Alert type="success" message={success}/>
 
               {loading ? (
-                <Loader text="Cargando post..." />
+                <Loader text="Cargando post..."/>
               ) : post ? (
                 <PostCard
                   post={post}
