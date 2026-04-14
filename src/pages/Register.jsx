@@ -72,7 +72,7 @@ export default function Register() {
                   </div>
 
                   <div>
-                      <label className="block mb-1 text-sm">Contraseña</label>
+                      <label className="block mb-1 text-sm">ContraseÃ±a</label>
                       <input
                         type="password"
                         name="password"
@@ -84,7 +84,7 @@ export default function Register() {
                   </div>
 
                   <div>
-                      <label className="block mb-1 text-sm">Confirmar contraseña</label>
+                      <label className="block mb-1 text-sm">Confirmar contraseÃ±a</label>
                       <input
                         type="password"
                         name="password_confirmation"
@@ -109,7 +109,7 @@ export default function Register() {
               </form>
 
               <p className="mt-4 text-sm text-slate-600">
-                  ¿Ya tienes cuenta? <Link to="/login" className="underline">Inicia sesión</Link>
+                  Â¿Ya tienes cuenta? <Link to="/login" className="underline">Inicia sesiÃ³n</Link>
               </p>
           </div>
       </div>

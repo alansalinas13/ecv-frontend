@@ -1,13 +1,16 @@
-import {useEffect, useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import api from '../api/axios'
 import AppLayout from '../components/layout/AppLayout'
 import PostCard from '../components/forum/PostCard'
-import {useAuth} from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
+import Alert from '../components/ui/Alert'
+import Loader from '../components/ui/Loader'
+import Confirm from '../components/ui/Confirm'
 
 export default function ForumDetail() {
-    const {id} = useParams()
-    const {user} = useAuth()
+    const { id } = useParams()
+    const { user } = useAuth()
 
     const [post, setPost] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -16,13 +19,16 @@ export default function ForumDetail() {
     const [submittingPost, setSubmittingPost] = useState(false)
     const [submittingComment, setSubmittingComment] = useState(false)
 
+    const [confirmOpen, setConfirmOpen] = useState(false)
+    const [confirmType, setConfirmType] = useState(null)
+    const [selectedId, setSelectedId] = useState(null)
+
     const fetchPost = async () => {
         try {
             setError('')
             const response = await api.get(`/posts/${id}`)
             setPost(response.data)
-        }
-        catch (err) {
+        } catch (err) {
             setError(err.response?.data?.message || 'No se pudo cargar el post')
         }
     }
@@ -32,8 +38,7 @@ export default function ForumDetail() {
             try {
                 setLoading(true)
                 await fetchPost()
-            }
-            finally {
+            } finally {
                 setLoading(false)
             }
         }
@@ -50,34 +55,54 @@ export default function ForumDetail() {
             await api.put(`/posts/${postId}`, data)
             setSuccess('Post actualizado correctamente')
             await fetchPost()
-        }
-        catch (err) {
-            const firstValidationError = err.response?.data?.errors
-              ? Object.values(err.response.data.errors)[0]?.[0]
-              : null
-
-            setError(firstValidationError || err.response?.data?.message || 'No se pudo actualizar el post')
-        }
-        finally {
+        } catch (err) {
+            setError('No se pudo actualizar el post')
+        } finally {
             setSubmittingPost(false)
         }
     }
 
-    const handleDeletePost = async (postId) => {
-        const confirmed = window.confirm('¿Seguro que deseas eliminar este post?')
-        if (!confirmed) {
-            return
-        }
+    const openDeletePostConfirm = (postId) => {
+        setConfirmType('post')
+        setSelectedId(postId)
+        setConfirmOpen(true)
+    }
+
+    const openDeleteCommentConfirm = (commentId) => {
+        setConfirmType('comment')
+        setSelectedId(commentId)
+        setConfirmOpen(true)
+    }
+
+    const closeConfirm = () => {
+        setConfirmOpen(false)
+        setSelectedId(null)
+        setConfirmType(null)
+    }
+
+    const confirmAction = async () => {
+        if (!selectedId) return
 
         setError('')
         setSuccess('')
 
         try {
-            await api.delete(`/posts/${postId}`)
-            window.location.href = '/forum'
-        }
-        catch (err) {
-            setError(err.response?.data?.message || 'No se pudo eliminar el post')
+            if (confirmType === 'post') {
+                await api.delete(`/posts/${selectedId}`)
+                window.location.href = '/forum'
+                return
+            }
+
+            if (confirmType === 'comment') {
+                await api.delete(`/comments/${selectedId}`)
+                setSuccess('Comentario eliminado correctamente')
+                await fetchPost()
+            }
+
+            closeConfirm()
+        } catch (err) {
+            setError('No se pudo realizar la acciÃ³n')
+            closeConfirm()
         }
     }
 
@@ -87,82 +112,56 @@ export default function ForumDetail() {
         setSuccess('')
 
         try {
-            await api.post(`/posts/${postId}/comments`, {content})
+            await api.post(`/posts/${postId}/comments`, { content })
             setSuccess('Comentario agregado correctamente')
             resetForm()
             await fetchPost()
-        }
-        catch (err) {
-            const firstValidationError = err.response?.data?.errors
-              ? Object.values(err.response.data.errors)[0]?.[0]
-              : null
-
-            setError(firstValidationError || err.response?.data?.message || 'No se pudo agregar el comentario')
-        }
-        finally {
+        } catch {
+            setError('No se pudo agregar el comentario')
+        } finally {
             setSubmittingComment(false)
-        }
-    }
-
-    const handleDeleteComment = async (commentId) => {
-        const confirmed = window.confirm('¿Seguro que deseas eliminar este comentario?')
-        if (!confirmed) {
-            return
-        }
-
-        setError('')
-        setSuccess('')
-
-        try {
-            await api.delete(`/comments/${commentId}`)
-            setSuccess('Comentario eliminado correctamente')
-            await fetchPost()
-        }
-        catch (err) {
-            setError(err.response?.data?.message || 'No se pudo eliminar el comentario')
         }
     }
 
     return (
       <AppLayout>
           <div className="space-y-6">
-              <div>
-                  <Link to="/forum" className="text-sm text-slate-600 underline">
-                      ? Volver al foro
-                  </Link>
-              </div>
+              <Link to="/forum" className="text-sm underline">
+                  ? Volver
+              </Link>
 
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4">
-                    {error}
-                </div>
-              )}
-
-              {success && (
-                <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4">
-                    {success}
-                </div>
-              )}
+              <Alert type="error" message={error} />
+              <Alert type="success" message={success} />
 
               {loading ? (
-                <div className="bg-white rounded-xl shadow-md p-6">
-                    <p className="text-slate-600">Cargando post...</p>
-                </div>
+                <Loader text="Cargando post..." />
               ) : post ? (
                 <PostCard
                   post={post}
                   currentUser={user}
                   onUpdatePost={handleUpdatePost}
-                  onDeletePost={handleDeletePost}
+                  onDeletePost={openDeletePostConfirm}
                   onCreateComment={handleCreateComment}
-                  onDeleteComment={handleDeleteComment}
+                  onDeleteComment={openDeleteCommentConfirm}
                   submittingPost={submittingPost}
                   submittingComment={submittingComment}
                 />
               ) : (
-                <div className="bg-white rounded-xl shadow-md p-6">
-                    <p className="text-slate-600">Post no encontrado.</p>
+                <div className="bg-white p-6 rounded-xl">
+                    Post no encontrado
                 </div>
+              )}
+
+              {confirmOpen && (
+                <Confirm
+                  message={
+                      confirmType === 'post'
+                        ? 'Â¿Eliminar este post?'
+                        : 'Â¿Eliminar este comentario?'
+                  }
+                  onConfirm={confirmAction}
+                  onCancel={closeConfirm}
+                />
               )}
           </div>
       </AppLayout>

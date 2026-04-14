@@ -15,7 +15,7 @@ export default function EvaluationHistoryCard({evaluation}) {
       <div className="bg-white rounded-xl shadow-md p-5 border border-slate-200">
           <div className="flex items-center justify-between gap-3 mb-3">
               <h3 className="font-semibold text-slate-800">
-                  Evaluación #{evaluation.id}
+                  EvaluaciÃ³n #{evaluation.id}
               </h3>
 
               <span
@@ -33,12 +33,12 @@ export default function EvaluationHistoryCard({evaluation}) {
 
           <div className="grid md:grid-cols-2 gap-2 text-sm text-slate-700">
               <div><span className="font-medium">Edad:</span> {evaluation.answers.age}</div>
-              <div><span className="font-medium">Fumador:</span> {evaluation.answers.smoker ? 'Sí' : 'No'}</div>
-              <div><span className="font-medium">Hipertensión:</span> {evaluation.answers.hypertension ? 'Sí' : 'No'}
+              <div><span className="font-medium">Fumador:</span> {evaluation.answers.smoker ? 'SÃ­' : 'No'}</div>
+              <div><span className="font-medium">HipertensiÃ³n:</span> {evaluation.answers.hypertension ? 'SÃ­' : 'No'}
               </div>
-              <div><span className="font-medium">Diabetes:</span> {evaluation.answers.diabetes ? 'Sí' : 'No'}</div>
-              <div><span className="font-medium">Obesidad:</span> {evaluation.answers.obesity ? 'Sí' : 'No'}</div>
-              <div><span className="font-medium">Ejercicio:</span> {evaluation.answers.exercise ? 'Sí' : 'No'}</div>
+              <div><span className="font-medium">Diabetes:</span> {evaluation.answers.diabetes ? 'SÃ­' : 'No'}</div>
+              <div><span className="font-medium">Obesidad:</span> {evaluation.answers.obesity ? 'SÃ­' : 'No'}</div>
+              <div><span className="font-medium">Ejercicio:</span> {evaluation.answers.exercise ? 'SÃ­' : 'No'}</div>
           </div>
       </div>
     )

@@ -31,7 +31,7 @@ export default function PostCard({
                             {post.title}
                         </h2>
                         <p className="text-sm text-slate-500 mt-1">
-                            Por {post.user?.name} · {post.user?.email}
+                            Por {post.user?.name} Â· {post.user?.email}
                         </p>
                     </div>
 
@@ -75,7 +75,7 @@ export default function PostCard({
                   onClick={() => setEditing(false)}
                   className="mt-3 text-sm text-slate-600 underline"
                 >
-                    Cancelar edición
+                    Cancelar ediciÃ³n
                 </button>
             </div>
           )}
@@ -119,7 +119,7 @@ export default function PostCard({
                         )
                     })
                   ) : (
-                    <p className="text-sm text-slate-500">Aún no hay comentarios.</p>
+                    <p className="text-sm text-slate-500">AÃºn no hay comentarios.</p>
                   )}
               </div>
 

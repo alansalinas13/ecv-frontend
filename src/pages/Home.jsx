@@ -1,19 +1,16 @@
-import { Link, Navigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import {Link, Navigate} from 'react-router-dom'
+import {useAuth} from '../context/AuthContext'
+import Loader from "../components/ui/Loader.jsx";
 
 export default function Home() {
-    const { isAuthenticated, loading } = useAuth()
+    const {isAuthenticated, loading} = useAuth()
 
-    if (loading) {
-        return (
-          <div className="min-h-screen flex items-center justify-center">
-              Cargando...
-          </div>
-        )
+    {
+        loading && <Loader/>
     }
 
     if (isAuthenticated) {
-        return <Navigate to="/dashboard" replace />
+        return <Navigate to="/dashboard" replace/>
     }
 
     return (
@@ -21,7 +18,7 @@ export default function Home() {
           <div className="bg-white shadow-md rounded-xl p-8 max-w-xl w-full">
               <h1 className="text-3xl font-bold mb-4">Plataforma ECV</h1>
               <p className="text-slate-600 mb-6">
-                  Sistema web de informaci髇, interacci髇 y gesti髇 m閐ica para enfermedades cardiovasculares.
+                  Sistema web de informaci贸n, interacci贸n y gesti贸n m茅dica para enfermedades cardiovasculares.
               </p>
 
               <div className="flex gap-3">
@@ -29,7 +26,7 @@ export default function Home() {
                     to="/login"
                     className="bg-slate-900 text-white px-4 py-2 rounded-lg"
                   >
-                      Iniciar sesi髇
+                      Iniciar sesi贸n
                   </Link>
 
                   <Link

@@ -3,6 +3,7 @@ import api from '../api/axios'
 import AppLayout from '../components/layout/AppLayout'
 import EvaluationResultCard from '../components/evaluations/EvaluationResultCard'
 import EvaluationHistoryCard from '../components/evaluations/EvaluationHistoryCard'
+import Alert from "../components/ui/Alert.jsx";
 
 export default function Evaluation() {
     const [form, setForm] = useState({
@@ -81,7 +82,7 @@ export default function Evaluation() {
 
             setLatestResult(response.data.evaluation)
             setLatestScore(response.data.score)
-            setSuccess('Evaluaci髇 registrada correctamente')
+            setSuccess('Evaluaci贸n registrada correctamente')
 
             await fetchEvaluations()
         }
@@ -90,7 +91,7 @@ export default function Evaluation() {
               ? Object.values(err.response.data.errors)[0]?.[0]
               : null
 
-            setError(firstValidationError || err.response?.data?.message || 'No se pudo registrar la evaluaci髇')
+            setError(firstValidationError || err.response?.data?.message || 'No se pudo registrar la evaluaci贸n')
         }
         finally {
             setSubmitting(false)
@@ -101,18 +102,18 @@ export default function Evaluation() {
       <AppLayout>
           <div className="space-y-6">
               <div>
-                  <h1 className="text-2xl font-bold text-slate-800">Autoevaluaci髇 cardiovascular</h1>
+                  <h1 className="text-2xl font-bold text-slate-800">Autoevaluaci贸n cardiovascular</h1>
                   <p className="text-slate-600 mt-1">
-                      Completa el formulario para obtener una evaluaci髇 orientativa de riesgo.
+                      Completa el formulario para obtener una evaluaci贸n orientativa de riesgo.
                   </p>
               </div>
 
               <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-xl p-4 text-sm">
-                  Esta evaluaci髇 es orientativa y no reemplaza el diagn髎tico de un profesional de la salud.
+                  Esta evaluaci贸n es orientativa y no reemplaza el diagn贸stico de un profesional de la salud.
               </div>
 
               <div className="bg-white rounded-xl shadow-md p-6">
-                  <h2 className="text-lg font-semibold mb-4">Formulario de evaluaci髇</h2>
+                  <h2 className="text-lg font-semibold mb-4">Formulario de evaluaci贸n</h2>
 
                   <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
                       <div className="md:col-span-2">
@@ -147,7 +148,7 @@ export default function Evaluation() {
                             checked={form.hypertension}
                             onChange={handleChange}
                           />
-                          <span>Hipertensi髇</span>
+                          <span>Hipertensi贸n</span>
                       </label>
 
                       <label className="flex items-center gap-3 bg-slate-50 border rounded-lg px-4 py-3">
@@ -186,23 +187,15 @@ export default function Evaluation() {
                             disabled={submitting}
                             className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg disabled:opacity-50"
                           >
-                              {submitting ? 'Evaluando...' : 'Enviar evaluaci髇'}
+                              {submitting ? 'Evaluando...' : 'Enviar evaluaci贸n'}
                           </button>
                       </div>
                   </form>
               </div>
 
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4">
-                    {error}
-                </div>
-              )}
+              <Alert type="error" message={error} />
 
-              {success && (
-                <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4">
-                    {success}
-                </div>
-              )}
+              <Alert type="success" message={success} />
 
               {latestResult && latestScore !== null && (
                 <EvaluationResultCard
@@ -220,7 +213,7 @@ export default function Evaluation() {
                     </div>
                   ) : evaluations.length === 0 ? (
                     <div className="bg-white rounded-xl shadow-md p-6">
-                        <p className="text-slate-600">A鷑 no tienes evaluaciones registradas.</p>
+                        <p className="text-slate-600">A煤n no tienes evaluaciones registradas.</p>
                     </div>
                   ) : (
                     <div className="grid lg:grid-cols-2 gap-4">

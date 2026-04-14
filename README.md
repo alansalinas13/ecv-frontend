@@ -357,3 +357,122 @@ Crear archivo `.env`:
 
 ```env
 VITE_API_URL=http://127.0.0.1:8000/api
+```
+---
+# Menú por rol
+
+La navegación del sistema se construye dinámicamente según el rol del usuario autenticado.
+
+## Roles
+
+- 1: Admin
+- 2: Doctor
+- 3: Usuario
+
+## Visibilidad
+
+### Admin
+- Dashboard
+- Doctores
+- Citas
+- Foro
+- Hospitales
+
+### Doctor
+- Dashboard
+- Doctores
+- Citas
+- Foro
+- Hospitales
+
+### Usuario
+- Dashboard
+- Doctores
+- Citas
+- Foro
+- Autoevaluación
+- Hospitales
+
+## Protección adicional
+
+Se usa `RoleRoute` para restringir rutas del frontend según rol.
+
+## Mejora UX - Buscador en foro
+
+En la página `/forum` se incorporó un buscador por título.
+
+### Comportamiento
+
+- filtra localmente los posts cargados
+- ignora mayúsculas/minúsculas
+- muestra mensaje si no hay coincidencias
+## Mejora UX - Filtro de citas
+
+En la página `/appointments` se agregó filtrado por estado.
+
+### Estados disponibles
+
+- all
+- pending
+- confirmed
+- cancelled
+
+### Comportamiento
+
+- filtra localmente las citas cargadas
+- ordena por fecha ascendente
+- muestra mensaje si no hay coincidencias
+
+## Mejora UX - Doctores
+
+En la página `/doctors` se agregaron:
+
+- buscador por nombre o especialidad
+- ordenamiento por nombre
+- ordenamiento por especialidad
+
+## Mejora UX - Hospitales
+
+En la página `/hospitals` se agregaron:
+
+- buscador por nombre o dirección
+- ordenamiento por nombre
+- ordenamiento por dirección
+
+El mapa refleja la lista filtrada de hospitales.
+
+## Nuevo estado de citas
+
+Se agregó el estado:
+
+- completed
+
+### Significado
+
+Indica que la consulta ya fue realizada.
+
+### Flujo de estados
+
+- pending
+- confirmed
+- cancelled
+- completed
+## Ajuste final - Módulo Doctores
+
+### Admin
+- crear doctor
+- editar cualquier doctor
+- eliminar doctor
+
+### Doctor
+- editar su propio perfil
+
+### User
+- solo visualizar listado
+
+### Endpoints adicionales
+
+GET /api/doctor-users/available
+PUT /api/doctors/{id}
+DELETE /api/doctors/{id}
+POST /api/doctors

@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import api from '../api/axios'
 import AppLayout from '../components/layout/AppLayout'
 import PostForm from '../components/forum/PostForm'
 import PostListItem from '../components/forum/PostListItem'
+import Alert from '../components/ui/Alert'
+import Loader from '../components/ui/Loader'
 
 export default function Forum() {
     const [posts, setPosts] = useState([])
+    const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
@@ -16,7 +19,8 @@ export default function Forum() {
             setError('')
             const response = await api.get('/posts')
             setPosts(response.data)
-        } catch (err) {
+        }
+        catch (err) {
             setError(err.response?.data?.message || 'No se pudieron cargar los posts')
         }
     }
@@ -26,7 +30,8 @@ export default function Forum() {
             try {
                 setLoading(true)
                 await fetchPosts()
-            } finally {
+            }
+            finally {
                 setLoading(false)
             }
         }
@@ -44,16 +49,30 @@ export default function Forum() {
             setSuccess('Post creado correctamente')
             resetForm()
             await fetchPosts()
-        } catch (err) {
+        }
+        catch (err) {
             const firstValidationError = err.response?.data?.errors
               ? Object.values(err.response.data.errors)[0]?.[0]
               : null
 
             setError(firstValidationError || err.response?.data?.message || 'No se pudo crear el post')
-        } finally {
+        }
+        finally {
             setSubmittingPost(false)
         }
     }
+
+    const filteredPosts = useMemo(() => {
+        const term = search.trim().toLowerCase()
+
+        if (!term) {
+            return posts
+        }
+
+        return posts.filter((post) =>
+          post.title.toLowerCase().includes(term)
+        )
+    }, [posts, search])
 
     return (
       <AppLayout>
@@ -74,30 +93,38 @@ export default function Forum() {
                   />
               </div>
 
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4">
-                    {error}
-                </div>
-              )}
+              <div className="bg-white rounded-xl shadow-md p-6">
+                  <label className="block mb-2 text-sm font-medium text-slate-700">
+                      Buscar por título
+                  </label>
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Ej: hipertensión, dieta, ejercicio..."
+                    className="w-full border rounded-lg px-3 py-2"
+                  />
+              </div>
 
-              {success && (
-                <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4">
-                    {success}
-                </div>
-              )}
+              <Alert type="error" message={error}/>
+              <Alert type="success" message={success}/>
 
               <div className="space-y-4">
                   {loading ? (
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <p className="text-slate-600">Cargando posts...</p>
-                    </div>
+                    <Loader text="Cargando posts..."/>
                   ) : posts.length === 0 ? (
                     <div className="bg-white rounded-xl shadow-md p-6">
-                        <p className="text-slate-600">No hay publicaciones todav�a.</p>
+                        <p className="text-slate-600">No hay publicaciones todavía.</p>
+                    </div>
+                  ) : filteredPosts.length === 0 ? (
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <p className="text-slate-600">
+                            No se encontraron posts con ese título.
+                        </p>
                     </div>
                   ) : (
-                    posts.map((post) => (
-                      <PostListItem key={post.id} post={post} />
+                    filteredPosts.map((post) => (
+                      <PostListItem key={post.id} post={post}/>
                     ))
                   )}
               </div>

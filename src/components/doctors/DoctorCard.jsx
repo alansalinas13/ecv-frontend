@@ -1,13 +1,24 @@
-export default function DoctorCard({doctor}) {
+export default function DoctorCard({
+    doctor,
+    canEdit = false,
+    canDelete = false,
+    onEdit,
+    onDelete,
+}) {
     return (
       <div className="bg-white rounded-xl shadow-md p-5 border border-slate-200">
-          <div className="space-y-2">
-              <h2 className="text-xl font-semibold text-slate-800">
-                  {doctor.user?.name}
-              </h2>
-              <div className="inline-block bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">
-                  Doctor
+          <div className="space-y-3">
+              <div>
+                  <h2 className="text-xl font-semibold text-slate-800">
+                      {doctor.user?.name}
+                  </h2>
+
+                  <div
+                    className="inline-block bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full mt-2">
+                      Doctor
+                  </div>
               </div>
+
               <p className="text-sm text-slate-500">
                   {doctor.user?.email}
               </p>
@@ -18,16 +29,40 @@ export default function DoctorCard({doctor}) {
               </div>
 
               <div>
-                  <span className="font-medium text-slate-700">Teléfono: </span>
+                  <span className="font-medium text-slate-700">TelÃ©fono: </span>
                   <span className="text-slate-600">{doctor.phone || 'No disponible'}</span>
               </div>
 
               <div>
-                  <span className="font-medium text-slate-700">Descripción: </span>
+                  <span className="font-medium text-slate-700">DescripciÃ³n: </span>
                   <p className="text-slate-600 mt-1">
-                      {doctor.description || 'Sin descripción'}
+                      {doctor.description || 'Sin descripciÃ³n'}
                   </p>
               </div>
+
+              {(canEdit || canDelete) && (
+                <div className="flex flex-wrap gap-2 pt-2">
+                    {canEdit && (
+                      <button
+                        type="button"
+                        onClick={() => onEdit(doctor)}
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-sm"
+                      >
+                          Editar
+                      </button>
+                    )}
+
+                    {canDelete && (
+                      <button
+                        type="button"
+                        onClick={() => onDelete(doctor.id)}
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
+                      >
+                          Eliminar
+                      </button>
+                    )}
+                </div>
+              )}
           </div>
       </div>
     )

@@ -1,28 +1,30 @@
 import {useEffect, useState} from 'react'
 
 const initialState = {
-    name: '',
-    address: '',
-    lat: '',
-    lng: '',
+    user_id: '',
+    specialty: '',
+    phone: '',
+    description: '',
 }
 
-export default function HospitalForm({
+export default function DoctorForm({
     onSubmit,
     submitting,
     initialValues = null,
-    submitLabel = 'Guardar hospital',
+    submitLabel = 'Guardar doctor',
     onCancel = null,
+    doctorUsers = [],
+    showUserSelect = true,
 }) {
     const [form, setForm] = useState(initialState)
 
     useEffect(() => {
         if (initialValues) {
             setForm({
-                name: initialValues.name ?? '',
-                address: initialValues.address ?? '',
-                lat: initialValues.lat ?? '',
-                lng: initialValues.lng ?? '',
+                user_id: initialValues.user_id ?? '',
+                specialty: initialValues.specialty ?? '',
+                phone: initialValues.phone ?? '',
+                description: initialValues.description ?? '',
             })
         }
         else {
@@ -45,14 +47,36 @@ export default function HospitalForm({
 
     return (
       <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
+          {showUserSelect && (
+            <div className="md:col-span-2">
+                <label className="block mb-1 text-sm font-medium text-slate-700">
+                    Usuario doctor
+                </label>
+                <select
+                  name="user_id"
+                  value={form.user_id}
+                  onChange={handleChange}
+                  className="w-full border rounded-lg px-3 py-2"
+                  required
+                >
+                    <option value="">Selecciona un usuario doctor</option>
+                    {doctorUsers.map((user) => (
+                      <option key={user.id} value={user.id}>
+                          {user.name} - {user.email}
+                      </option>
+                    ))}
+                </select>
+            </div>
+          )}
+
           <div>
               <label className="block mb-1 text-sm font-medium text-slate-700">
-                  Nombre
+                  Especialidad
               </label>
               <input
                 type="text"
-                name="name"
-                value={form.name}
+                name="specialty"
+                value={form.specialty}
                 onChange={handleChange}
                 className="w-full border rounded-lg px-3 py-2"
                 required
@@ -61,45 +85,27 @@ export default function HospitalForm({
 
           <div>
               <label className="block mb-1 text-sm font-medium text-slate-700">
-                  Dirección
+                  Teléfono
               </label>
               <input
                 type="text"
-                name="address"
-                value={form.address}
+                name="phone"
+                value={form.phone}
                 onChange={handleChange}
                 className="w-full border rounded-lg px-3 py-2"
-                required
               />
           </div>
 
-          <div>
+          <div className="md:col-span-2">
               <label className="block mb-1 text-sm font-medium text-slate-700">
-                  Latitud
+                  Descripción
               </label>
-              <input
-                type="number"
-                step="any"
-                name="lat"
-                value={form.lat}
+              <textarea
+                name="description"
+                value={form.description}
                 onChange={handleChange}
+                rows={4}
                 className="w-full border rounded-lg px-3 py-2"
-                required
-              />
-          </div>
-
-          <div>
-              <label className="block mb-1 text-sm font-medium text-slate-700">
-                  Longitud
-              </label>
-              <input
-                type="number"
-                step="any"
-                name="lng"
-                value={form.lng}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-                required
               />
           </div>
 

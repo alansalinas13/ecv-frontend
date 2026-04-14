@@ -11,12 +11,14 @@ import Forum from '../pages/Forum'
 import Evaluation from '../pages/Evaluation'
 import HospitalsMap from '../pages/HospitalsMap'
 import ForumDetail from '../pages/ForumDetail'
+import RoleRoute from '../components/auth/RoleRoute'
+import Loader from '../components/ui/Loader'
 
 function GuestRoute({children}) {
     const {isAuthenticated, loading} = useAuth()
 
-    if (loading) {
-        return <div className="min-h-screen flex items-center justify-center">Cargando...</div>
+    {
+        loading && <Loader/>
     }
 
     if (isAuthenticated) {
@@ -110,6 +112,15 @@ export default function AppRouter() {
                     <ProtectedRoute>
                         <ForumDetail/>
                     </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/evaluation"
+                element={
+                    <RoleRoute allowedRoles={[3]}>
+                        <Evaluation/>
+                    </RoleRoute>
                 }
               />
 

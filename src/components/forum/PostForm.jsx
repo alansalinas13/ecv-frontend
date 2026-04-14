@@ -24,7 +24,7 @@ export default function PostForm({onSubmit, submitting, initialValues, submitLab
       <form onSubmit={handleSubmit} className="space-y-4">
           <div>
               <label className="block mb-1 text-sm font-medium text-slate-700">
-                  Título
+                  TÃ­tulo
               </label>
               <input
                 type="text"

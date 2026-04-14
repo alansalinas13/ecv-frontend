@@ -15,7 +15,7 @@ export default function EvaluationResultCard({evaluation, score}) {
       <div className="bg-white rounded-xl shadow-md p-6 border border-slate-200 space-y-4">
           <div className="flex items-center justify-between gap-4">
               <h2 className="text-xl font-semibold text-slate-800">
-                  Resultado de evaluación
+                  Resultado de evaluaciÃ³n
               </h2>
 
               <span
@@ -43,12 +43,12 @@ export default function EvaluationResultCard({evaluation, score}) {
               <h3 className="font-semibold text-slate-800 mb-2">Respuestas</h3>
               <div className="grid md:grid-cols-2 gap-3 text-sm text-slate-700">
                   <div><span className="font-medium">Edad:</span> {evaluation.answers.age}</div>
-                  <div><span className="font-medium">Fumador:</span> {evaluation.answers.smoker ? 'Sí' : 'No'}</div>
+                  <div><span className="font-medium">Fumador:</span> {evaluation.answers.smoker ? 'SÃ­' : 'No'}</div>
                   <div><span
-                    className="font-medium">Hipertensión:</span> {evaluation.answers.hypertension ? 'Sí' : 'No'}</div>
-                  <div><span className="font-medium">Diabetes:</span> {evaluation.answers.diabetes ? 'Sí' : 'No'}</div>
-                  <div><span className="font-medium">Obesidad:</span> {evaluation.answers.obesity ? 'Sí' : 'No'}</div>
-                  <div><span className="font-medium">Ejercicio:</span> {evaluation.answers.exercise ? 'Sí' : 'No'}</div>
+                    className="font-medium">HipertensiÃ³n:</span> {evaluation.answers.hypertension ? 'SÃ­' : 'No'}</div>
+                  <div><span className="font-medium">Diabetes:</span> {evaluation.answers.diabetes ? 'SÃ­' : 'No'}</div>
+                  <div><span className="font-medium">Obesidad:</span> {evaluation.answers.obesity ? 'SÃ­' : 'No'}</div>
+                  <div><span className="font-medium">Ejercicio:</span> {evaluation.answers.exercise ? 'SÃ­' : 'No'}</div>
               </div>
           </div>
       </div>

@@ -10,7 +10,7 @@ export default function PostListItem({post}) {
               </h2>
 
               <p className="text-sm text-slate-500 mt-1">
-                  Por {post.user?.name} · {post.user?.email}
+                  Por {post.user?.name} Â· {post.user?.email}
               </p>
           </div>
 

@@ -17,7 +17,7 @@ export default function HospitalCard({
                 setCopied(false)
             }, 2000)
         } catch {
-            alert('No se pudo copiar la dirección')
+            alert('No se pudo copiar la direcciÃ³n')
         }
     }
 
@@ -45,7 +45,7 @@ export default function HospitalCard({
                     onClick={handleCopyAddress}
                     className="bg-slate-900 hover:bg-slate-800 text-white px-3 py-2 rounded-lg text-sm"
                   >
-                      {copied ? 'Dirección copiada' : 'Copiar dirección'}
+                      {copied ? 'DirecciÃ³n copiada' : 'Copiar direcciÃ³n'}
                   </button>
 
                   <a
@@ -68,9 +68,8 @@ export default function HospitalCard({
                         </button>
 
                         <button
-                          type="button"
                           onClick={() => onDelete(hospital.id)}
-                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
+                          className="bg-red-600 text-white px-3 py-2 rounded-lg"
                         >
                             Eliminar
                         </button>

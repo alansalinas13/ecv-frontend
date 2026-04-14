@@ -31,7 +31,7 @@ export default function Login() {
             const message =
               err.response?.data?.message ||
               err.response?.data?.errors?.email?.[0] ||
-              'No se pudo iniciar sesión'
+              'No se pudo iniciar sesiÃ³n'
 
             setError(message)
         }
@@ -43,7 +43,7 @@ export default function Login() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
           <div className="bg-white shadow-md rounded-xl p-8 max-w-md w-full">
-              <h1 className="text-2xl font-bold mb-6">Iniciar sesión</h1>
+              <h1 className="text-2xl font-bold mb-6">Iniciar sesiÃ³n</h1>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
@@ -59,7 +59,7 @@ export default function Login() {
                   </div>
 
                   <div>
-                      <label className="block mb-1 text-sm">Contraseña</label>
+                      <label className="block mb-1 text-sm">ContraseÃ±a</label>
                       <input
                         type="password"
                         name="password"
@@ -84,7 +84,7 @@ export default function Login() {
               </form>
 
               <p className="mt-4 text-sm text-slate-600">
-                  ¿No tienes cuenta? <Link to="/register" className="underline">Regístrate</Link>
+                  Â¿No tienes cuenta? <Link to="/register" className="underline">RegÃ­strate</Link>
               </p>
           </div>
       </div>
