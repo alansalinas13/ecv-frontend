@@ -1,16 +1,359 @@
-# React + Vite
+# ? ECV Sistema ? Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación frontend desarrollada en React para la plataforma de información, interacción y gestión médica enfocada en enfermedades cardiovasculares.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# ? Tecnologías utilizadas
 
-## React Compiler
+* React (última versión estable)
+* Vite
+* Axios
+* TailwindCSS
+* React Router DOM
+* Leaflet + React Leaflet
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+# ?? Instalación
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 1. Clonar repositorio
+
+```bash
+git clone <repo-url>
+cd ecv-frontend
+```
+
+---
+
+## 2. Instalar dependencias
+
+```bash
+npm install
+```
+
+---
+
+## 3. Configurar variables de entorno
+
+Crear archivo `.env` en la raíz:
+
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
+```
+
+---
+
+## 4. Ejecutar el proyecto
+
+```bash
+npm run dev
+```
+
+El proyecto estará disponible en:
+
+```text
+http://localhost:5173
+```
+
+---
+
+# ? Estructura del proyecto
+
+```text
+src/
+?
+??? api/
+?   ??? axios.js
+?
+??? components/
+?   ??? auth/
+?   ??? layout/
+?   ??? doctors/
+?   ??? appointments/
+?   ??? forum/
+?   ??? hospitals/
+?   ??? evaluations/
+?
+??? context/
+?   ??? AuthContext.jsx
+?
+??? pages/
+?   ??? Home.jsx
+?   ??? Login.jsx
+?   ??? Register.jsx
+?   ??? Dashboard.jsx
+?   ??? Doctors.jsx
+?   ??? Appointments.jsx
+?   ??? Forum.jsx
+?   ??? ForumDetail.jsx
+?   ??? Evaluation.jsx
+?   ??? HospitalsMap.jsx
+?
+??? router/
+?   ??? AppRouter.jsx
+?
+??? utils/
+?   ??? leaflet.js
+?
+??? main.jsx
+```
+
+---
+
+# ? Autenticación
+
+## Flujo
+
+1. Usuario se registra o loguea
+2. Backend devuelve token (Laravel Sanctum)
+3. Token se guarda en `localStorage`
+4. Axios lo envía automáticamente en cada request
+
+---
+
+## Axios
+
+Archivo:
+
+```text
+src/api/axios.js
+```
+
+Configuración:
+
+* baseURL desde `.env`
+* headers JSON
+* interceptor con Bearer Token
+
+---
+
+## AuthContext
+
+Responsable de:
+
+* manejar usuario autenticado
+* guardar token
+* recuperar sesión con `/auth/me`
+* logout
+
+---
+
+## Protección de rutas
+
+* `ProtectedRoute` ? requiere login
+* `GuestRoute` ? bloquea acceso si ya está logueado
+
+---
+
+# ???? Módulos implementados
+
+---
+
+## ? Dashboard
+
+* muestra información del usuario autenticado
+* nombre, email y rol
+
+---
+
+## ???? Doctores
+
+### Funcionalidades
+
+* listado de doctores
+* visualización en tarjetas
+
+### Endpoint
+
+```text
+GET /api/doctors
+```
+
+---
+
+## ? Citas
+
+### Usuario
+
+* crear cita
+* ver sus citas
+
+### Doctor
+
+* ver citas asignadas
+* cambiar estado
+
+### Estados
+
+* pending
+* confirmed
+* cancelled
+
+### Endpoints
+
+```text
+GET /api/appointments
+POST /api/appointments
+PUT /api/appointments/{id}/status
+```
+
+---
+
+## ? Foro
+
+### Rutas
+
+* `/forum` ? listado
+* `/forum/:id` ? detalle
+
+### Funcionalidades
+
+* crear post
+* editar/eliminar post propio
+* comentar
+* eliminar comentario propio
+
+### Endpoints
+
+```text
+GET /api/posts
+GET /api/posts/{id}
+POST /api/posts
+PUT /api/posts/{id}
+DELETE /api/posts/{id}
+POST /api/posts/{id}/comments
+DELETE /api/comments/{id}
+```
+
+---
+
+## ? Autoevaluación
+
+### Funcionalidades
+
+* formulario de evaluación
+* cálculo de riesgo
+* historial de evaluaciones
+
+### Endpoints
+
+```text
+GET /api/evaluations
+POST /api/evaluations
+```
+
+---
+
+## ?? Hospitales
+
+### Funcionalidades
+
+* listado de hospitales
+* mapa interactivo
+* marcadores con ubicación
+* copiar dirección
+* abrir en Google Maps
+
+### Admin
+
+* crear hospital
+* editar hospital
+* eliminar hospital
+
+### Endpoints
+
+```text
+GET /api/hospitals
+POST /api/hospitals
+PUT /api/hospitals/{id}
+DELETE /api/hospitals/{id}
+```
+
+---
+
+# ?? Mapa
+
+## Librerías
+
+```bash
+npm install leaflet react-leaflet
+```
+
+## Configuración
+
+Archivo:
+
+```text
+src/utils/leaflet.js
+```
+
+Corrige iconos de marcador en Vite.
+
+---
+
+# ? Control por roles
+
+El frontend ajusta la UI según rol:
+
+| Rol    | Acceso                 |
+| ------ | ---------------------- |
+| Admin  | gestión de hospitales  |
+| Doctor | gestión de citas       |
+| User   | crear citas            |
+| Todos  | foro, mapa, evaluación |
+
+---
+
+# ?? Manejo de errores
+
+* validaciones backend mostradas en UI
+* errores generales capturados
+* mensajes de feedback al usuario
+
+---
+
+# ? Scripts disponibles
+
+```bash
+npm run dev     # desarrollo
+npm run build   # build producción
+npm run preview # preview build
+```
+
+---
+
+# ? Build de producción
+
+```bash
+npm run build
+```
+
+Salida:
+
+```text
+dist/
+```
+
+---
+
+# ? Requisitos
+
+* Node.js LTS (>= 20)
+* Backend Laravel corriendo
+
+---
+
+# ? Notas
+
+* El sistema depende del backend Laravel
+* Las rutas API usan Sanctum
+* El frontend no reemplaza validaciones backend
+
+
+# Variables de entorno
+
+Crear archivo `.env`:
+
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
