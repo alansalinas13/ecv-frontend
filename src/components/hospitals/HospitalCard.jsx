@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useState} from 'react'
 
 export default function HospitalCard({
     hospital,
@@ -16,7 +16,8 @@ export default function HospitalCard({
             setTimeout(() => {
                 setCopied(false)
             }, 2000)
-        } catch {
+        }
+        catch {
             alert('No se pudo copiar la dirección')
         }
     }
@@ -29,6 +30,13 @@ export default function HospitalCard({
               <h2 className="text-lg font-semibold text-slate-800">
                   {hospital.name}
               </h2>
+
+              <div className="text-sm">
+                  <span className="font-medium text-slate-700">Ciudad: </span>
+                  <span className="text-slate-600">
+            {hospital.city?.name || 'No definida'}
+          </span>
+              </div>
 
               <p className="text-slate-600">
                   {hospital.address}
@@ -68,8 +76,9 @@ export default function HospitalCard({
                         </button>
 
                         <button
+                          type="button"
                           onClick={() => onDelete(hospital.id)}
-                          className="bg-red-600 text-white px-3 py-2 rounded-lg"
+                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm"
                         >
                             Eliminar
                         </button>

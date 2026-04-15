@@ -160,7 +160,7 @@ export default function Appointments() {
                                 <option value="">Selecciona un doctor</option>
                                 {doctors.map((doctor) => (
                                   <option key={doctor.id} value={doctor.id}>
-                                      {doctor.user?.name} - {doctor.specialty}
+                                      {doctor.user?.name} - {doctor.specialty} - {doctor.hospital?.name || 'Sin hospital'} - {doctor.city?.name || 'Sin ciudad'} - {doctor.start_time && doctor.end_time ? `${doctor.start_time} a ${doctor.end_time}` : 'Sin horario'}
                                   </option>
                                 ))}
                             </select>

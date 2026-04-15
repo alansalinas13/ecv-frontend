@@ -9,7 +9,7 @@ const statusLabels = {
     pending: 'Pendiente',
     confirmed: 'Confirmada',
     cancelled: 'Cancelada',
-    completed: 'Finalizada',
+    completed: 'Completada',
 }
 
 export default function AppointmentCard({
@@ -50,10 +50,34 @@ export default function AppointmentCard({
               )}
 
               {appointment.doctor && (
-                <div>
-                    <span className="font-medium">Doctor: </span>
-                    {appointment.doctor.user?.name || 'No disponible'}
-                </div>
+                <>
+                    <div>
+                        <span className="font-medium">Doctor: </span>
+                        {appointment.doctor.user?.name || 'No disponible'}
+                    </div>
+
+                    <div>
+                        <span className="font-medium">Especialidad: </span>
+                        {appointment.doctor.specialty || 'No definida'}
+                    </div>
+
+                    <div>
+                        <span className="font-medium">Hospital: </span>
+                        {appointment.doctor.hospital?.name || 'No definido'}
+                    </div>
+
+                    <div>
+                        <span className="font-medium">Ciudad: </span>
+                        {appointment.doctor.city?.name || 'No definida'}
+                    </div>
+
+                    <div>
+                        <span className="font-medium">Horario de atención: </span>
+                        {appointment.doctor.start_time && appointment.doctor.end_time
+                          ? `${appointment.doctor.start_time} a ${appointment.doctor.end_time}`
+                          : 'No definido'}
+                    </div>
+                </>
               )}
           </div>
 
@@ -74,7 +98,7 @@ export default function AppointmentCard({
                   onClick={() => onStatusChange(appointment.id, 'completed')}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm disabled:opacity-50"
                 >
-                    Finalizar
+                    Completar
                 </button>
 
                 <button

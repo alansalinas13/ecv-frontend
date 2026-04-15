@@ -1,10 +1,14 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 const initialState = {
     user_id: '',
+    city_id: '',
+    hospital_id: '',
     specialty: '',
     phone: '',
     description: '',
+    start_time: '',
+    end_time: '',
 }
 
 export default function DoctorForm({
@@ -14,6 +18,8 @@ export default function DoctorForm({
     submitLabel = 'Guardar doctor',
     onCancel = null,
     doctorUsers = [],
+    cities = [],
+    hospitals = [],
     showUserSelect = true,
 }) {
     const [form, setForm] = useState(initialState)
@@ -22,22 +28,39 @@ export default function DoctorForm({
         if (initialValues) {
             setForm({
                 user_id: initialValues.user_id ?? '',
+                city_id: initialValues.city_id ?? '',
+                hospital_id: initialValues.hospital_id ?? '',
                 specialty: initialValues.specialty ?? '',
                 phone: initialValues.phone ?? '',
                 description: initialValues.description ?? '',
+                start_time: initialValues.start_time ?? '',
+                end_time: initialValues.end_time ?? '',
             })
-        }
-        else {
+        } else {
             setForm(initialState)
         }
     }, [initialValues])
 
+    const filteredHospitals = useMemo(() => {
+        if (!form.city_id) return hospitals
+        return hospitals.filter((hospital) => String(hospital.city_id) === String(form.city_id))
+    }, [hospitals, form.city_id])
+
     const handleChange = (e) => {
-        const {name, value} = e.target
-        setForm((prev) => ({
-            ...prev,
-            [name]: value,
-        }))
+        const { name, value } = e.target
+
+        setForm((prev) => {
+            const next = {
+                ...prev,
+                [name]: value,
+            }
+
+            if (name === 'city_id') {
+                next.hospital_id = ''
+            }
+
+            return next
+        })
     }
 
     const handleSubmit = (e) => {
@@ -71,6 +94,46 @@ export default function DoctorForm({
 
           <div>
               <label className="block mb-1 text-sm font-medium text-slate-700">
+                  Ciudad
+              </label>
+              <select
+                name="city_id"
+                value={form.city_id}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-3 py-2"
+                required
+              >
+                  <option value="">Selecciona una ciudad</option>
+                  {cities.map((city) => (
+                    <option key={city.id} value={city.id}>
+                        {city.name}
+                    </option>
+                  ))}
+              </select>
+          </div>
+
+          <div>
+              <label className="block mb-1 text-sm font-medium text-slate-700">
+                  Hospital
+              </label>
+              <select
+                name="hospital_id"
+                value={form.hospital_id}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-3 py-2"
+                required
+              >
+                  <option value="">Selecciona un hospital</option>
+                  {filteredHospitals.map((hospital) => (
+                    <option key={hospital.id} value={hospital.id}>
+                        {hospital.name}
+                    </option>
+                  ))}
+              </select>
+          </div>
+
+          <div>
+              <label className="block mb-1 text-sm font-medium text-slate-700">
                   Especialidad
               </label>
               <input
@@ -93,6 +156,34 @@ export default function DoctorForm({
                 value={form.phone}
                 onChange={handleChange}
                 className="w-full border rounded-lg px-3 py-2"
+              />
+          </div>
+
+          <div>
+              <label className="block mb-1 text-sm font-medium text-slate-700">
+                  Hora inicio
+              </label>
+              <input
+                type="time"
+                name="start_time"
+                value={form.start_time}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-3 py-2"
+                required
+              />
+          </div>
+
+          <div>
+              <label className="block mb-1 text-sm font-medium text-slate-700">
+                  Hora fin
+              </label>
+              <input
+                type="time"
+                name="end_time"
+                value={form.end_time}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-3 py-2"
+                required
               />
           </div>
 

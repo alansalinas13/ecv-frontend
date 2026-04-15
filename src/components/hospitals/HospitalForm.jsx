@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 
 const initialState = {
+    city_id: '',
     name: '',
     address: '',
     lat: '',
@@ -13,12 +14,14 @@ export default function HospitalForm({
     initialValues = null,
     submitLabel = 'Guardar hospital',
     onCancel = null,
+    cities = [],
 }) {
     const [form, setForm] = useState(initialState)
 
     useEffect(() => {
         if (initialValues) {
             setForm({
+                city_id: initialValues.city_id ?? '',
                 name: initialValues.name ?? '',
                 address: initialValues.address ?? '',
                 lat: initialValues.lat ?? '',
@@ -45,6 +48,26 @@ export default function HospitalForm({
 
     return (
       <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
+          <div className="md:col-span-2">
+              <label className="block mb-1 text-sm font-medium text-slate-700">
+                  Ciudad
+              </label>
+              <select
+                name="city_id"
+                value={form.city_id}
+                onChange={handleChange}
+                className="w-full border rounded-lg px-3 py-2"
+                required
+              >
+                  <option value="">Selecciona una ciudad</option>
+                  {cities.map((city) => (
+                    <option key={city.id} value={city.id}>
+                        {city.name}
+                    </option>
+                  ))}
+              </select>
+          </div>
+
           <div>
               <label className="block mb-1 text-sm font-medium text-slate-700">
                   Nombre

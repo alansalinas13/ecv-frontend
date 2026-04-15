@@ -29,6 +29,25 @@ export default function DoctorCard({
               </div>
 
               <div>
+                  <span className="font-medium text-slate-700">Ciudad: </span>
+                  <span className="text-slate-600">{doctor.city?.name || 'No definida'}</span>
+              </div>
+
+              <div>
+                  <span className="font-medium text-slate-700">Hospital: </span>
+                  <span className="text-slate-600">{doctor.hospital?.name || 'No definido'}</span>
+              </div>
+
+              <div>
+                  <span className="font-medium text-slate-700">Horario: </span>
+                  <span className="text-slate-600">
+            {doctor.start_time && doctor.end_time
+              ? `${doctor.start_time} a ${doctor.end_time}`
+              : 'No definido'}
+          </span>
+              </div>
+
+              <div>
                   <span className="font-medium text-slate-700">Teléfono: </span>
                   <span className="text-slate-600">{doctor.phone || 'No disponible'}</span>
               </div>
