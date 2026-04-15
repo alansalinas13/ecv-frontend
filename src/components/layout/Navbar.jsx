@@ -19,7 +19,7 @@ export default function Navbar() {
     const role = user?.role
 
     const navItems = [
-        {label: 'Dashboard', to: '/dashboard', roles: [1, 2, 3]},
+        {label: 'Inicio', to: '/dashboard', roles: [1, 2, 3]},
         {label: 'Doctores', to: '/doctors', roles: [1, 2, 3]},
         {label: 'Citas', to: '/appointments', roles: [1, 2, 3]},
         {label: 'Foro', to: '/forum', roles: [1, 2, 3]},

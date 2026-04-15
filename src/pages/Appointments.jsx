@@ -256,7 +256,7 @@ export default function Appointments() {
                             : 'border border-slate-300 text-slate-700'
                         }`}
                       >
-                          Completadas
+                          Finalizadas
                       </button>
                   </div>
               </div>

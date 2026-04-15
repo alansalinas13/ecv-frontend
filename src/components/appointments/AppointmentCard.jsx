@@ -9,7 +9,7 @@ const statusLabels = {
     pending: 'Pendiente',
     confirmed: 'Confirmada',
     cancelled: 'Cancelada',
-    completed: 'Completada',
+    completed: 'Finalizada',
 }
 
 export default function AppointmentCard({
@@ -74,7 +74,7 @@ export default function AppointmentCard({
                   onClick={() => onStatusChange(appointment.id, 'completed')}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm disabled:opacity-50"
                 >
-                    Completar
+                    Finalizar
                 </button>
 
                 <button
