@@ -76,7 +76,7 @@ export default function Appointments() {
         try {
             await api.post('/appointments', form)
 
-            setSuccess('Cita creada correctamente')
+            setSuccess('Cita creada correctamente. Se notificó al doctor por correo.')
             setForm({
                 doctor_id: '',
                 appointment_date: '',

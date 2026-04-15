@@ -43,10 +43,16 @@ export default function AppointmentCard({
 
           <div className="space-y-2 text-sm text-slate-700">
               {appointment.user && (
-                <div>
-                    <span className="font-medium">Paciente: </span>
-                    {appointment.user.name} ({appointment.user.email})
-                </div>
+                <>
+                    <div>
+                        <span className="font-medium">Paciente: </span>
+                        {appointment.user.name} ({appointment.user.email})
+                    </div>
+                    <div>
+                        <span className="font-medium">Teléfono Paciente: </span>
+                        {appointment.user.phone || 'No disponible'}
+                    </div>
+                </>
               )}
 
               {appointment.doctor && (

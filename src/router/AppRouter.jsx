@@ -13,6 +13,7 @@ import HospitalsMap from '../pages/HospitalsMap'
 import ForumDetail from '../pages/ForumDetail'
 import RoleRoute from '../components/auth/RoleRoute'
 import Loader from '../components/ui/Loader'
+import Users from '../pages/Users.jsx'
 
 function GuestRoute({children}) {
     const {isAuthenticated, loading} = useAuth()
@@ -120,6 +121,15 @@ export default function AppRouter() {
                 element={
                     <RoleRoute allowedRoles={[3]}>
                         <Evaluation/>
+                    </RoleRoute>
+                }
+              />
+
+              <Route
+                path="/users"
+                element={
+                    <RoleRoute allowedRoles={[1]}>
+                        <Users />
                     </RoleRoute>
                 }
               />

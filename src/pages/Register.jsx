@@ -11,6 +11,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        phone: '',
     })
     const [error, setError] = useState('')
     const [submitting, setSubmitting] = useState(false)
@@ -68,6 +69,17 @@ export default function Register() {
                         onChange={handleChange}
                         className="w-full border rounded-lg px-3 py-2"
                         required
+                      />
+                  </div>
+
+                  <div>
+                      <label className="block mb-1 text-sm">Teléfono</label>
+                      <input
+                        type="text"
+                        name="phone"
+                        value={form.phone}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg px-3 py-2"
                       />
                   </div>
 

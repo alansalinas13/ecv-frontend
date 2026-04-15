@@ -20,6 +20,7 @@ export default function Navbar() {
 
     const navItems = [
         {label: 'Inicio', to: '/dashboard', roles: [1, 2, 3]},
+        {label: 'Usuarios', to: '/users', roles: [1]},
         {label: 'Doctores', to: '/doctors', roles: [1, 2, 3]},
         {label: 'Citas', to: '/appointments', roles: [1, 2, 3]},
         {label: 'Foro', to: '/forum', roles: [1, 2, 3]},
