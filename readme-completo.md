@@ -1,357 +1,303 @@
-# 🏥 Plataforma Web de Gestión de Enfermedades Cardiovasculares (ECV)
+# 🏥 ECV Sistema — Plataforma de Gestión de Citas Médicas
 
 ## 📌 Descripción General
 
-Sistema web completo para la gestión e interacción de usuarios en el ámbito de enfermedades cardiovasculares (ECV).
+ECV Sistema es una aplicación web desarrollada con el objetivo de facilitar la gestión de citas médicas, permitiendo la interacción entre pacientes, doctores y administradores dentro de un entorno centralizado.
 
-Permite:
+El sistema permite:
 
 * Registro y autenticación de usuarios
-* Gestión de roles (admin, doctor, usuario)
-* Gestión de doctores
-* Agendamiento y seguimiento de citas médicas
-* Foro de interacción entre usuarios
-* Autoevaluación de riesgo cardiovascular
-* Visualización y gestión de hospitales en mapa
+* Gestión de doctores y hospitales
+* Asignación de citas médicas
+* Notificaciones automáticas por correo
+* Participación en un foro de discusión
+* Evaluación de síntomas (autoevaluación)
+
+Este proyecto fue desarrollado como parte de una tesis, con un enfoque práctico en la digitalización de procesos médicos y mejora en la comunicación entre pacientes y profesionales de la salud.
 
 ---
 
-# 🧠 Arquitectura del Sistema
+## 🎯 Objetivos del Sistema
 
-El sistema está dividido en dos aplicaciones desacopladas:
+### Objetivo General
 
-## Backend
+Desarrollar una plataforma web que permita gestionar citas médicas de forma eficiente, incorporando funcionalidades modernas como geolocalización, control de roles y notificaciones automáticas.
 
-* Laravel (última versión estable)
-* PostgreSQL
-* API REST
-* Laravel Sanctum (autenticación por tokens)
+### Objetivos Específicos
 
-## Frontend
-
-* React (Vite)
-* Axios
-* TailwindCSS
+* Permitir a los usuarios registrarse y solicitar citas médicas
+* Facilitar a los doctores la gestión de sus pacientes y citas
+* Brindar a los administradores control total sobre el sistema
+* Implementar notificaciones automáticas para mejorar la comunicación
+* Centralizar la información médica en una sola plataforma
 
 ---
 
-# ⚙️ Instalación
+## 🧠 Arquitectura del Sistema
 
-## 🔹 1. Clonar el proyecto
+El sistema está dividido en dos partes principales:
+
+### 🔹 Backend (API REST)
+
+* Framework: Laravel
+* Autenticación: Laravel Sanctum
+* Base de datos: MySQL
+* Notificaciones: Laravel Notifications (Email SMTP)
+
+### 🔹 Frontend
+
+* Framework: React
+* Bundler: Vite
+* Estilos: TailwindCSS
+* Consumo de API: Axios
+
+---
+
+## 👥 Roles del Sistema
+
+El sistema maneja tres tipos de usuarios:
+
+| Rol             | Descripción                            |
+| --------------- | -------------------------------------- |
+| **Admin (1)**   | Control total del sistema              |
+| **Doctor (2)**  | Gestiona citas y su perfil profesional |
+| **Usuario (3)** | Solicita citas médicas                 |
+
+---
+
+## 🔐 Autenticación y Seguridad
+
+* Autenticación basada en tokens mediante **Laravel Sanctum**
+* Middleware personalizado para control de roles
+* Protección de rutas en frontend y backend
+* Validaciones en cada endpoint
+
+---
+
+## 🧩 Módulos del Sistema
+
+### 👤 Módulo de Usuarios
+
+* CRUD completo (solo admin)
+* Gestión de roles
+* Campo adicional: teléfono
+* Protección contra auto eliminación
+
+---
+
+### 🩺 Módulo de Doctores
+
+* Asociados a:
+
+    * Usuario
+    * Ciudad
+    * Hospital
+* Información adicional:
+
+    * Especialidad
+    * Teléfono
+    * Horario de atención
+
+---
+
+### 🏥 Módulo de Hospitales
+
+* Registro de hospitales con:
+
+    * Dirección
+    * Coordenadas (lat/lng)
+    * Ciudad
+* Visualización en mapa
+* Integración con Google Maps
+
+---
+
+### 🌎 Módulo de Ciudades
+
+* Seeder con ciudades de Paraguay
+* Relación con hospitales y doctores
+* Filtros en frontend
+
+---
+
+### 📅 Módulo de Citas
+
+* Creación de citas por usuarios
+* Estados:
+
+    * Pendiente
+    * Confirmada
+    * Cancelada
+    * Completada
+* Validaciones:
+
+    * No duplicar citas
+    * Horario dentro del rango del doctor
+
+---
+
+### 🔔 Notificaciones por Correo
+
+Al crear una cita:
+
+* Se envía automáticamente un email al doctor
+* Incluye:
+
+    * Fecha y hora
+    * Datos del paciente
+    * Teléfono del paciente
+    * Hospital y ciudad
+
+Implementado mediante:
+
+* Laravel Notifications
+* SMTP (Gmail)
+
+---
+
+### 💬 Módulo de Foro
+
+* Creación de publicaciones
+* Comentarios
+* Edición y eliminación con validación de autoría
+
+---
+
+### 🧪 Módulo de Autoevaluación
+
+* Evaluación básica de síntomas
+* Enfoque orientativo (no diagnóstico médico)
+
+---
+
+## ⚙️ Configuración del Proyecto
+
+---
+
+### 🔹 Backend (Laravel)
+
+#### Instalación
 
 ```bash
-git clone <url-del-repo>
-cd ecv-sistema
-```
-
----
-
-# 🖥️ BACKEND (Laravel)
-
-## 📦 1. Instalar dependencias
-
-```bash
-cd ecv-backend
 composer install
-```
-
----
-
-## ⚙️ 2. Configurar entorno
-
-Crear archivo `.env`:
-
-```bash
 cp .env.example .env
-```
-
-Configurar base de datos PostgreSQL:
-
-```env
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=ecv_db
-DB_USERNAME=postgres
-DB_PASSWORD=tu_password
-```
-
----
-
-## 🔑 3. Generar clave
-
-```bash
 php artisan key:generate
+php artisan migrate --seed
 ```
 
 ---
 
-## 🗄️ 4. Migraciones
-
-```bash
-php artisan migrate
-```
-
----
-
-## 🚀 5. Ejecutar servidor
-
-```bash
-php artisan serve
-```
-
-Backend disponible en:
-
-```text
-http://127.0.0.1:8000
-```
-
----
-
-# 🔐 Autenticación
-
-Se utiliza **Laravel Sanctum** con tokens.
-
-### Endpoints:
-
-* `POST /api/auth/register`
-* `POST /api/auth/login`
-* `POST /api/auth/logout`
-* `GET /api/auth/me`
-
----
-
-# 🧑‍⚕️ ROLES
-
-| Rol    | Código |
-| ------ | ------ |
-| Admin  | 1      |
-| Doctor | 2      |
-| User   | 3      |
-
----
-
-# 📡 API PRINCIPAL
-
-## 🧑‍⚕️ Doctores
-
-* `GET /api/doctors`
-* `GET /api/doctors/{id}`
-* `POST /api/doctors` (admin)
-* `PUT /api/doctors/{id}` (admin o dueño)
-* `DELETE /api/doctors/{id}` (admin)
-
-### Extra:
-
-* `GET /api/doctor-users/available`
-
----
-
-## 📅 Citas
-
-* `GET /api/appointments`
-* `POST /api/appointments`
-* `PUT /api/appointments/{id}/status`
-
-### Estados:
-
-* `pending`
-* `confirmed`
-* `cancelled`
-* `completed` ✅
-
----
-
-## 💬 Foro
-
-* `GET /api/posts`
-* `POST /api/posts`
-* `PUT /api/posts/{id}`
-* `DELETE /api/posts/{id}`
-
-### Comentarios
-
-* `POST /api/posts/{id}/comments`
-* `DELETE /api/comments/{id}`
-
----
-
-## 🧠 Autoevaluación
-
-* `POST /api/evaluations`
-* `GET /api/evaluations`
-
----
-
-## 🏥 Hospitales
-
-* `GET /api/hospitals`
-* `POST /api/hospitals` (admin)
-* `PUT /api/hospitals/{id}` (admin)
-* `DELETE /api/hospitals/{id}` (admin)
-
----
-
-# 🌐 FRONTEND (React)
-
-## 📦 1. Instalar dependencias
-
-```bash
-cd ecv-frontend
-npm install
-```
-
----
-
-## ⚙️ 2. Configurar entorno
-
-Crear `.env`:
+### 🔹 Variables de entorno importantes
 
 ```env
-VITE_API_URL=http://127.0.0.1:8000/api
+APP_NAME=ECV Sistema
+APP_ENV=local
+APP_KEY=base64:...
+APP_DEBUG=true
+APP_URL=http://localhost
 ```
 
 ---
 
-## 🚀 3. Ejecutar en desarrollo
+## 📧 Configuración de Email (Gmail SMTP)
+
+Para envío de notificaciones reales:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=tu_correo@gmail.com
+MAIL_PASSWORD=tu_app_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=tu_correo@gmail.com
+MAIL_FROM_NAME="ECV Sistema"
+```
+
+### Requisitos:
+
+* Activar verificación en dos pasos en Gmail
+* Generar contraseña de aplicación
+
+---
+
+### 🔹 Frontend (React)
+
+#### Instalación
 
 ```bash
+npm install
 npm run dev
 ```
 
-Frontend disponible en:
+---
 
-```text
-http://localhost:5173
-```
+## 🌐 Flujo del Sistema
+
+1. Usuario se registra
+2. Admin crea doctores o asigna roles
+3. Usuario selecciona doctor disponible
+4. Sistema valida horario
+5. Se registra la cita
+6. Doctor recibe notificación por correo
+7. Doctor gestiona la cita
 
 ---
 
-## 🏗️ 4. Build de producción
+## 🧪 Pruebas del Sistema
 
-```bash
-npm run build
-```
+Se realizaron pruebas para:
 
----
-
-# 🧩 Módulos del Sistema
-
-## 🔐 Autenticación
-
-* Registro
-* Login
-* Logout
-* Persistencia de sesión
+* Validación de roles
+* CRUD de cada módulo
+* Flujo de citas
+* Envío de correos
+* Integración frontend-backend
 
 ---
 
-## 🧑‍⚕️ Doctores
+## 🚀 Posibles Mejoras Futuras
 
-* Listado
-* Búsqueda
-* Ordenamiento
-* CRUD (admin)
-* Edición propia (doctor)
-
----
-
-## 📅 Citas
-
-* Crear citas (user)
-* Gestión de estados (doctor)
-* Filtros por estado
-* Estado final `completed`
+* Notificaciones por WhatsApp
+* Recordatorios automáticos de citas
+* Subida de archivos médicos
+* Historial clínico
+* Dashboard con estadísticas
+* Deploy completo en producción
 
 ---
 
-## 💬 Foro
-
-* Crear posts
-* Ver detalle
-* Comentarios
-* Edición y eliminación por autor
-* Buscador por título
-
----
-
-## 🧠 Autoevaluación
-
-* Evaluación de riesgo cardiovascular
-* Almacenamiento de resultados
-
----
-
-## 🏥 Hospitales
-
-* Mapa interactivo
-* CRUD (admin)
-* Búsqueda
-* Ordenamiento
-* Copiar dirección
-* Abrir en Google Maps
-
----
-
-# 🎨 UX Implementada
-
-* Alertas globales
-* Loaders
-* Modales de confirmación
-* Filtros dinámicos
-* Búsquedas en tiempo real
-* Control de acceso visual por rol
-
----
-
-# 🔒 Seguridad
-
-* Autenticación con tokens (Sanctum)
-* Middleware `auth:sanctum`
-* Middleware de roles
-* Validaciones backend
-* Control de autoría (foro)
-* Protección de endpoints sensibles
-
----
-
-# 📊 Estado del Proyecto
-
-✅ Backend completo
-✅ Frontend completo
-✅ CRUDs funcionales
-✅ Roles implementados
-✅ UX optimizada
-✅ Build de producción funcional
-
----
-
-# 🚀 Tecnologías
-
-## Backend
+## 🧱 Tecnologías Utilizadas
 
 * Laravel
-* PostgreSQL
-* Sanctum
-
-## Frontend
-
 * React
 * Vite
-* Axios
 * TailwindCSS
+* MySQL
+* Axios
+* Sanctum
 
 ---
 
-# 👨‍💻 Autor
+## 📌 Conclusión
 
-Proyecto desarrollado como sistema completo de gestión médica enfocado en ECV.
+El sistema desarrollado cumple con los objetivos planteados, proporcionando una solución funcional para la gestión de citas médicas, integrando múltiples módulos y tecnologías modernas.
+
+Se logró:
+
+* Automatizar procesos
+* Mejorar la comunicación entre usuarios y doctores
+* Centralizar información relevante
+* Implementar buenas prácticas de desarrollo
 
 ---
 
-# 📌 Notas finales
+## 👨‍💻 Autor
 
-* Sistema preparado para producción
-* Arquitectura escalable
-* Separación clara backend/frontend
-* Código limpio y mantenible
+Proyecto desarrollado por:
+
+**Ulises Salinas**
+
+Como parte de su trabajo de tesis.
+
+---
