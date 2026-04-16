@@ -14,6 +14,7 @@ import ForumDetail from '../pages/ForumDetail'
 import RoleRoute from '../components/auth/RoleRoute'
 import Loader from '../components/ui/Loader'
 import Users from '../pages/Users.jsx'
+import Assistant from '../pages/Assistant'
 
 function GuestRoute({children}) {
     const {isAuthenticated, loading} = useAuth()
@@ -129,8 +130,17 @@ export default function AppRouter() {
                 path="/users"
                 element={
                     <RoleRoute allowedRoles={[1]}>
-                        <Users />
+                        <Users/>
                     </RoleRoute>
+                }
+              />
+
+              <Route
+                path="/assistant"
+                element={
+                    <ProtectedRoute>
+                        <Assistant/>
+                    </ProtectedRoute>
                 }
               />
 

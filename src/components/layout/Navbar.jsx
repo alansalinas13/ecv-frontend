@@ -26,6 +26,7 @@ export default function Navbar() {
         {label: 'Foro', to: '/forum', roles: [1, 2, 3]},
         {label: 'Autoevaluación', to: '/evaluation', roles: [3]},
         {label: 'Hospitales', to: '/hospitals', roles: [1, 2, 3]},
+        { label: 'Asistente ECV', to: '/assistant', roles: [1, 2, 3] },
     ]
 
     const visibleItems = navItems.filter((item) => item.roles.includes(role))

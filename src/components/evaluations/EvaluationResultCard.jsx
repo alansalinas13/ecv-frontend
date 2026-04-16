@@ -50,6 +50,16 @@ export default function EvaluationResultCard({evaluation, score}) {
                   <div><span className="font-medium">Obesidad:</span> {evaluation.answers.obesity ? 'Sí' : 'No'}</div>
                   <div><span className="font-medium">Ejercicio:</span> {evaluation.answers.exercise ? 'Sí' : 'No'}</div>
               </div>
+              {evaluation.ai_summary && (
+                <div>
+                    <h3 className="font-semibold text-slate-800 mb-2">Resumen inteligente</h3>
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                        <p className="text-slate-700 whitespace-pre-line leading-7">
+                            {evaluation.ai_summary}
+                        </p>
+                    </div>
+                </div>
+              )}
           </div>
       </div>
     )
